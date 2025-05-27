@@ -54,7 +54,7 @@
   <div id="result"></div>
   <audio id="audioPlayer" controls></audio>
 
-  <script src="https://gist.githubusercontent.com/konmang2/b933f71b20e6ce44fc52bbcd9cb87965/raw/quiz-data.js"></script>
+  <script src="https://raw.githubusercontent.com/konmang2/DORO/main/quiz-data.js"></script>
 
   <script src="quiz-data.js"></script>
 
