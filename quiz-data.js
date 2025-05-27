@@ -18,9 +18,9 @@
     "category": "여행자",
     "type": "이미지",
     "question": "다음 실루엣은 무엇일까요?",
-    "image": "https://github.com/konmang2/quiz-image/blob/main/%ED%96%A5%EB%A6%892%EC%9B%90%EB%B3%B822.png?raw=true",
+    "image": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%87%E3%85%851A.png?raw=true",
     "answerText": "누룽지",
-    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%ED%96%A5%EB%A6%892%EC%9B%90%EB%B3%B82.png?raw=true",
+    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%87%E3%85%851.png?raw=true",
     "timer": 40
   },
   {
@@ -36,11 +36,11 @@
     "type": "순서",
     "question": "다음 우인단들의 서열을 높은 순서대로 이동해주세요.",
     "options": [
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%82%B0%EB%93%9C%EB%A1%9C%EB%84%A4.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%95%84%EB%A5%BC%EB%A0%88%ED%82%A4%EB%85%B8.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%B9%B4%ED%94%BC%ED%83%80%EB%85%B8.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%BD%9C%EB%A1%AC%EB%B9%84%EB%82%98.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%ED%83%80%EB%A5%B4%ED%83%88%EB%A6%AC%EC%95%84.png?raw=true"
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%87%E3%85%852A.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%87%E3%85%852B.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%87%E3%85%852C.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%87%E3%85%852D.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%87%E3%85%852E.png?raw=true"
     ],
     "answerOrder": [2,3,1,0,4],
     "timer": 40,
@@ -60,13 +60,13 @@
     "type": "순서",
     "question": "다음 캐릭터들의 현상금을 낮은 순으로 나열해주세요.",
     "options": [
-      "https://github.com/konmang2/quiz-image/blob/main/%EB%B0%98%EB%94%94.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EB%B8%94%EB%A0%88%EC%9D%B4%EB%93%9C.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%9D%80%EB%9E%91.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%B9%B4%ED%94%84%EC%B9%B4.png?raw=true"
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%85%E3%85%8C%E3%84%B9%E3%85%872A.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%85%E3%85%8C%E3%84%B9%E3%85%872B.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%85%E3%85%8C%E3%84%B9%E3%85%872C.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%85%85%E3%85%8C%E3%84%B9%E3%85%872D.png?raw=true"
     ],
     "answerOrder": [2,1,0,3],
-    "timer": 40,
+    "timer": 60,
     "explanation": "은랑 - 51억\n블레이드 - 81억 3000만\n반디 - 97억 2300만\n카프카 - 108억 9900만"
   },
   {
@@ -88,9 +88,9 @@
     "category": "개척자",
     "type": "이미지",
     "question": "다음 실루엣은 무엇인가요?",
-    "image": "https://github.com/konmang2/quiz-image/blob/main/%EB%9D%BC%EC%9D%B4%EB%8D%B41_%EC%8B%A4%EB%A3%A8%EC%97%A3.png?raw=true",
+    "image": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%85%E3%85%8C%E3%84%B9%E3%85%871A.png?raw=true",
     "answerText": "아케론",
-    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%EB%9D%BC%EC%9D%B4%EB%8D%B41.png?raw=true",
+    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%85%E3%85%8C%E3%84%B9%E3%85%871.png?raw=true",
     "timer": 40
   },
   {
@@ -130,9 +130,9 @@
     "category": "로프꾼",
     "type": "이미지",
     "question": "다음 실루엣은 무엇일까요?",
-    "image": "https://github.com/konmang2/quiz-image/blob/main/%EC%B2%AD%EC%9D%98_%EC%8B%A4%EB%A3%A8%EC%97%A3.png?raw=true",
+    "image": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%88%E3%85%88%E3%85%881A.png?raw=true",
     "answerText": "청의",
-    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%EC%B2%AD%EC%9D%98.png?raw=true",
+    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%88%E3%85%88%E3%85%881.png?raw=true",
     "timer": 40
   },
   {
@@ -172,9 +172,9 @@
     "category": "방랑자",
     "type": "이미지",
     "question": "다음 실루엣은 무엇인가요?",
-    "image": "https://github.com/konmang2/quiz-image/blob/main/%EC%B9%B4%EB%A9%9C_%EC%8B%A4%EB%A3%A8%EC%97%A3_%EA%B0%9C%EC%84%A0.png?raw=true",
+    "image": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%81%E3%85%881A.png?raw=true",
     "answerText": "카멜리아",
-    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%EC%B9%B4%EB%A9%9C.jpg?raw=true",
+    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%E3%85%81%E3%85%881.jpg?raw=true",
     "timer": 40
   },
   {
@@ -262,13 +262,13 @@
     "type": "순서",
     "question": "다음 캐릭터들을 버스트 단계 낮은 순서대로 나열해주세요. (1 → 2 → 3 → Λ)",
     "options": [
-      "https://github.com/konmang2/quiz-image/blob/main/%EB%A0%88%EB%93%9C%ED%9B%84%EB%93%9C.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%95%84%EC%8A%A4%EC%B9%B4.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%95%A0%EB%93%9C%EB%AF%B8.png?raw=true",
-      "https://github.com/konmang2/quiz-image/blob/main/%EC%97%91%EC%8B%9C%EC%95%84.png?raw=true"
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%84%B4%E3%85%8B1A.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%84%B4%E3%85%8B1B.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%84%B4%E3%85%8B1C.png?raw=true",
+      "https://github.com/konmang2/quiz-image/blob/main/%E3%84%B4%E3%85%8B1D.png?raw=true"
     ],
     "answerOrder": [3,2,1,0],
-    "timer": 40,
+    "timer": 60,
     "explanation": "엑시아 – 1단계\n애드미 – 2단계\n아스카 – 3단계\n레드후드 – Λ단계"
   }
 ];
