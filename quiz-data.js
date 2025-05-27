@@ -209,9 +209,9 @@
     "category": "단테",
     "type": "이미지",
     "question": "다음 실루엣은 무엇일까요?",
-    "image": "https://github.com/konmang2/quiz-image/blob/main/%ED%9E%88%EC%8A%A42.png?raw=true",
+    "image": "https://github.com/konmang2/quiz-image/blob/main/%E3%84%BC%E3%85%851A.png?raw=true",
     "answerText": "와일드헌트 히스클리프",
-    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%ED%9E%88%EC%8A%A4.PNG?raw=true",
+    "revealImage": "https://github.com/konmang2/quiz-image/blob/main/%E3%84%BC%E3%85%851.PNG?raw=true",
     "timer": 60
   },
   {
