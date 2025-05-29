@@ -4,7 +4,22 @@
   <meta charset="UTF-8">
   <title>퀴즈</title>
   <style>
-    body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfdef3); margin: 0; padding: 0; text-align: center; }
+    @keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+.shake {
+  animation: shake 0.5s;
+}
+if (!ok) {
+  const quizEl = document.getElementById('quiz');
+  quizEl.classList.add('shake');
+  quizEl.addEventListener('animationend', () => {
+    quizEl.classList.remove('shake');
+  }, { once: true });
+}
+body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfdef3); margin: 0; padding: 0; text-align: center; }
     #header { margin-top: 20px; display: flex; justify-content: center; align-items: baseline; }
     h1#title { font-size: 32px; margin: 0; }
     #selectedCats { font-size: 18px; margin-left: 20px; color: #555; display: none; }
@@ -234,6 +249,21 @@
     }
 
     function showResult() {
+      const nickname = prompt('퀴즈 완료! 닉네임을 입력하세요:', '익명') || '익명';
+  const scoreRecord = { name: nickname, score: score, total: shuffledQuestions.length };
+      // 랭킹을 배열로 꺼내기(없으면 빈 배열)
+let ranking = JSON.parse(localStorage.getItem('quizRanking') || '[]');
+
+// 새 기록 추가
+ranking.push(scoreRecord);
+
+// 점수 내림차순으로 정렬, 최대 5개만 유지
+ranking.sort((a,b) => b.score - a.score);
+if (ranking.length > 5) ranking = ranking.slice(0, 5);
+
+// 다시 로컬스토리지에 저장
+localStorage.setItem('quizRanking', JSON.stringify(ranking));
+
       document.getElementById('quiz').style.display = 'none';
       let html = `<h2 style="font-size:40px;">총점: ${score} / ${shuffledQuestions.length}</h2>`;
       html += `<div style='font-size:20px;margin-top:10px;'>항목별 점수:</div><ul style='list-style:none;padding:0;'>`;
@@ -244,6 +274,27 @@
       html += `</ul><button onclick="location.reload()">다시 시작</button>`;
       document.getElementById('result').innerHTML = html;
       document.getElementById('result').style.display = 'block';
+      // 기존 showResult() 내용 끝난 뒤…
+
+// ④ 랭킹 테이블 생성
+let rankHtml = '<h3>🏆 랭킹 TOP 5</h3><ol>';
+ranking.forEach(r => {
+  rankHtml += `<li>${r.name}: ${r.score} / ${r.total}</li>`;
+});
+rankHtml += '</ol>';
+
+// 결과 컨테이너에 추가
+document.getElementById('result').innerHTML += rankHtml;
+#result ol {
+  text-align: left;
+  display: inline-block;
+  padding: 0 20px;
+}
+#result li {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
     }
 
     function playAudio(src) {
