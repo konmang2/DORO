@@ -4,22 +4,29 @@
   <meta charset="UTF-8">
   <title>퀴즈</title>
   <style>
+    /* 흔들림 애니메이션 */
     @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-10px); }
-  40%, 80% { transform: translateX(10px); }
-}
-.shake {
-  animation: shake 0.5s;
-}
-if (!ok) {
-  const quizEl = document.getElementById('quiz');
-  quizEl.classList.add('shake');
-  quizEl.addEventListener('animationend', () => {
-    quizEl.classList.remove('shake');
-  }, { once: true });
-}
-body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfdef3); margin: 0; padding: 0; text-align: center; }
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    .shake {
+      animation: shake 0.5s;
+    }
+
+    /* 랭킹 CSS */
+    #result ol {
+      text-align: left;
+      display: inline-block;
+      padding: 0 20px;
+    }
+    #result li {
+      margin: 5px 0;
+      font-size: 18px;
+    }
+
+    /* 기본 스타일 */
+    body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfdef3); margin: 0; padding: 0; text-align: center; }
     #header { margin-top: 20px; display: flex; justify-content: center; align-items: baseline; }
     h1#title { font-size: 32px; margin: 0; }
     #selectedCats { font-size: 18px; margin-left: 20px; color: #555; display: none; }
@@ -69,17 +76,14 @@ body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfd
   <div id="result"></div>
   <audio id="audioPlayer" controls></audio>
 
+  <!-- 퀴즈 데이터 로드 -->
   <script src="quiz-data.js"></script>
 
-  <!-- 2) 카운터 & 렌더링 로직 + 기존 퀴즈 로직 -->
+  <!-- 퀴즈 로직 -->
   <script>
     const counterEl = document.getElementById('counter');
     let currentQuestion = 0;
-    let selectedCategories = [],
-        score = 0,
-        scoreByCategory = {},
-        shuffledQuestions = [],
-        timer, timeLeft, answered = false, lastOk = false;
+    let selectedCategories = [], score = 0, scoreByCategory = {}, shuffledQuestions = [], timer, timeLeft, answered = false, lastOk = false;
 
     function renderQuestion(idx) {
       const total = shuffledQuestions.length;
@@ -91,247 +95,123 @@ body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfd
     function toggleCategory(cat, el) {
       const idx = selectedCategories.indexOf(cat);
       if (idx === -1) { selectedCategories.push(cat); el.classList.add('active'); }
-      else           { selectedCategories.splice(idx,1); el.classList.remove('active'); }
+      else { selectedCategories.splice(idx,1); el.classList.remove('active'); }
     }
 
     function startQuiz() {
       if (!selectedCategories.length) return;
-      shuffledQuestions = data
-        .filter(q => selectedCategories.includes(q.category))
-        .sort(() => Math.random() - 0.5);
-      score = 0;
-      scoreByCategory = {};
+      shuffledQuestions = data.filter(q => selectedCategories.includes(q.category)).sort(() => Math.random() - 0.5);
+      score = 0; scoreByCategory = {};
       selectedCategories.forEach(c => scoreByCategory[c] = 0);
       document.getElementById('selectedCats').innerText = '선택: ' + selectedCategories.join(', ');
       document.getElementById('selectedCats').style.display = 'inline-block';
       document.getElementById('categorySelection').style.display = 'none';
       document.getElementById('startBtn').style.display = 'none';
       document.getElementById('quiz').style.display = 'block';
-      currentQuestion = 0;
       renderQuestion(0);
     }
 
     function showQuestion() {
-      clearInterval(timer);
-      answered = false;
+      clearInterval(timer); answered = false;
       if (currentQuestion >= shuffledQuestions.length) return showResult();
-
       const q = shuffledQuestions[currentQuestion];
       document.getElementById('title').innerText = q.category;
-
       let html = `<h2>${q.question}</h2>`;
       html += `<div id='timer'>남은 시간: ${q.timer}초</div>`;
       if (q.audio) html += `<button onclick="playAudio('${q.audio}')">🔊 재생</button>`;
-
-      if (q.type === '객관식') {
-        q.options.forEach((opt,i) =>
-          html += `<div class='option' onclick='checkAnswer(${i})'>${opt}</div>`
-        );
-      }
+      if (q.type === '객관식') q.options.forEach((opt,i) => html += `<div class='option' onclick='checkAnswer(${i})'>${opt}</div>`);
       else if (q.type === '순서') {
         html += `<div class='drag-container'>`;
-        q.options.forEach((img,i) =>
-          html += `<img class='drag-item' src='${img}' draggable='true' ondragstart='dragStart(event)' data-index='${i}'>`
-        );
+        q.options.forEach((img,i) => html += `<img class='drag-item' src='${img}' draggable='true' ondragstart='dragStart(event)' data-index='${i}'>`);
         html += `</div><div class='drop-container'>`;
-        q.options.forEach(() =>
-          html += `<div class='drop-slot' ondragover='allowDrop(event)' ondrop='drop(event)'></div>`
-        );
+        q.options.forEach(() => html += `<div class='drop-slot' ondragover='allowDrop(event)' ondrop='drop(event)'></div>`);
         html += `</div>`;
-      }
-      else {
-        if (q.image) {
-          html += `<div style='display:flex;justify-content:center;align-items:center;'>
-                     <img src='${q.image}' style='width:300px;margin-right:10px;'>
-                     <img id='reveal-img' src='' style='width:300px;display:none;margin-left:10px;'>
-                   </div>`;
-        }
+      } else {
+        if (q.image) html += `<div style='display:flex;justify-content:center;'><img src='${q.image}' style='width:300px;margin-right:10px;'><img id='reveal-img' src='' style='width:300px;display:none;'></div>`;
         html += `<input id='answerInput'><br>`;
       }
-
       html += `<button onclick='checkAnswer()'>제출</button>`;
       document.getElementById('quiz').innerHTML = html;
-
       startTimer();
     }
 
-    function checkMultiple(userAnswers, q) {
-      const uniqueAns = Array.from(new Set(userAnswers));
-      if (uniqueAns.length !== q.requiredCount) return false;
-      return uniqueAns.every(ans => q.answerPool.includes(ans));
-    }
-
     function checkAnswer(sel=null) {
-      if (!ok) {
-  const quizEl = document.getElementById('quiz');
-  quizEl.classList.add('shake');
-  quizEl.addEventListener('animationend', () => {
-    quizEl.classList.remove('shake');
-  }, { once: true });
-}
-      if (answered) return;
-      answered = true;
-      clearInterval(timer);
-      disableInputs();
-
+      if (answered) return; answered = true; clearInterval(timer); disableInputs();
       const q = shuffledQuestions[currentQuestion];
       let ok = false;
-      const raw  = (document.getElementById('answerInput')?.value || '').toLowerCase();
-      const norm = raw.replace(/\s|,/g, '');
-
-      if (q.type === '객관식') {
-        ok = q.answer.includes(sel);
-      }
+      const raw = (document.getElementById('answerInput')?.value || '').toLowerCase().replace(/\s|,/g, '');
+      if (q.type === '객관식') ok = q.answer.includes(sel);
       else if (q.type === '순서') {
-        const placed = Array.from(document.querySelectorAll('.drop-slot img'))
-                             .map(i => +i.dataset.index);
+        const placed = Array.from(document.querySelectorAll('.drop-slot img')).map(i => +i.dataset.index);
         ok = JSON.stringify(placed) === JSON.stringify(q.answerOrder);
       }
-      else if (q.answerText) {
-        ok = norm === q.answerText.toLowerCase().replace(/\s|,/g, '');
-      }
-      else if (q.type === 'multiple') {
-        ok = checkMultiple(getUserMultipleAnswers(), q);
-      }
-      else if (q.answer) {
-        const arr = q.answer.map(a => a.toLowerCase().replace(/\s|,/g,''));
-        ok = arr.every(a => norm.includes(a));
+      else if (q.answerText) ok = raw === q.answerText.toLowerCase().replace(/\s|,/g, '');
+      else if (q.type === 'multiple') ok = checkMultiple(getUserMultipleAnswers(), q);
+      else if (q.answer) ok = q.answer.map(a => a.toLowerCase().replace(/\s|,/g,'')).every(a => raw.includes(a));
+
+      if (!ok) {
+        const quizEl = document.getElementById('quiz');
+        quizEl.classList.add('shake');
+        quizEl.addEventListener('animationend', () => quizEl.classList.remove('shake'), { once: true });
       }
 
       lastOk = ok;
-      if (ok) {
-        score++;
-        scoreByCategory[q.category]++;
-      }
+      if (ok) { score++; scoreByCategory[q.category]++; }
       showAnswer();
     }
 
     function showAnswer() {
       const q = shuffledQuestions[currentQuestion];
       const ansHtml = q.answerText ? `<div style='margin-top:10px;'>정답: ${q.answerText}</div>` : '';
-      const expHtml = q.explanation
-        ? `<div style='margin-top:10px;color:#555;white-space:pre-wrap;'>
-             해설:<br>${q.explanation.replace(/\n/g,'<br>')}
-           </div>`
-        : '';
-
-      document.getElementById('quiz').innerHTML += `
-        <div class='explanation'>
-          ${lastOk?'✅':'❌'}${ansHtml}${expHtml}<br>
-          <button onclick='nextQuestion()'>다음 문제</button>
-        </div>`;
-
-      const rev = document.getElementById('reveal-img');
-      if (q.revealImage && rev) {
-        rev.src = q.revealImage;
-        rev.style.display = 'block';
-      }
+      const expHtml = q.explanation ? `<div style='margin-top:10px;color:#555;white-space:pre-wrap;'>해설:<br>${q.explanation.replace(/\n/g,'<br>')}</div>` : '';
+      document.getElementById('quiz').innerHTML += `<div class='explanation'>${lastOk?'✅':'❌'}${ansHtml}${expHtml}<br><button onclick='nextQuestion()'>다음 문제</button></div>`;
+      const rev = document.getElementById('reveal-img'); if (q.revealImage && rev) { rev.src = q.revealImage; rev.style.display = 'block'; }
     }
 
     function startTimer() {
       timeLeft = shuffledQuestions[currentQuestion].timer;
       document.getElementById('timer').innerText = `남은 시간: ${timeLeft}초`;
       timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer').innerText = `남은 시간: ${timeLeft}초`;
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          answered = true;
-          disableInputs();
-          lastOk = false;
-          showAnswer();
-        }
+        timeLeft--; document.getElementById('timer').innerText = `남은 시간: ${timeLeft}초`;
+        if (timeLeft <= 0) { clearInterval(timer); answered = true; disableInputs(); lastOk = false; showAnswer(); }
       }, 1000);
     }
 
-    function disableInputs() {
-      document.querySelectorAll('.option').forEach(el => el.onclick = null);
-      const btn = document.querySelector('#quiz button');
-      if (btn) btn.disabled = true;
-    }
-
-    function nextQuestion() {
-      currentQuestion++;
-      renderQuestion(currentQuestion);
-    }
+    function disableInputs() { document.querySelectorAll('.option').forEach(el => el.onclick = null); document.querySelector('#quiz button')?.setAttribute('disabled', true); }
+    function nextQuestion() { currentQuestion++; renderQuestion(currentQuestion); }
 
     function showResult() {
-      document.getElementById('result').innerHTML += rankHtml;
       const nickname = prompt('퀴즈 완료! 닉네임을 입력하세요:', '익명') || '익명';
-  const scoreRecord = { name: nickname, score: score, total: shuffledQuestions.length };
-      // 랭킹을 배열로 꺼내기(없으면 빈 배열)
-let ranking = JSON.parse(localStorage.getItem('quizRanking') || '[]');
-
-// 새 기록 추가
-ranking.push(scoreRecord);
-
-// 점수 내림차순으로 정렬, 최대 5개만 유지
-ranking.sort((a,b) => b.score - a.score);
-if (ranking.length > 5) ranking = ranking.slice(0, 5);
-
-// 다시 로컬스토리지에 저장
-localStorage.setItem('quizRanking', JSON.stringify(ranking));
+      let ranking = JSON.parse(localStorage.getItem('quizRanking') || '[]');
+      ranking.push({ name: nickname, score: score, total: shuffledQuestions.length });
+      ranking.sort((a,b) => b.score - a.score);
+      if (ranking.length > 5) ranking = ranking.slice(0,5);
+      localStorage.setItem('quizRanking', JSON.stringify(ranking));
 
       document.getElementById('quiz').style.display = 'none';
       let html = `<h2 style="font-size:40px;">총점: ${score} / ${shuffledQuestions.length}</h2>`;
       html += `<div style='font-size:20px;margin-top:10px;'>항목별 점수:</div><ul style='list-style:none;padding:0;'>`;
-      selectedCategories.forEach(c => {
-        const tot = shuffledQuestions.filter(q => q.category===c).length;
-        html += `<li>${c}: ${scoreByCategory[c]} / ${tot}</li>`;
-      });
+      selectedCategories.forEach(c => { html += `<li>${c}: ${scoreByCategory[c]} / ${shuffledQuestions.filter(q=>q.category===c).length}</li>`; });
       html += `</ul><button onclick="location.reload()">다시 시작</button>`;
       document.getElementById('result').innerHTML = html;
       document.getElementById('result').style.display = 'block';
-      // 기존 showResult() 내용 끝난 뒤…
 
-// ④ 랭킹 테이블 생성
-let rankHtml = '<h3>🏆 랭킹 TOP 5</h3><ol>';
-ranking.forEach(r => {
-  rankHtml += `<li>${r.name}: ${r.score} / ${r.total}</li>`;
-});
-rankHtml += '</ol>';
-
-// 결과 컨테이너에 추가
-document.getElementById('result').innerHTML += rankHtml;
-#result ol {
-  text-align: left;
-  display: inline-block;
-  padding: 0 20px;
-}
-#result li {
-  margin: 5px 0;
-  font-size: 18px;
-}
-
+      let rankHtml = '<h3>🏆 랭킹 TOP 5</h3><ol>';
+      ranking.forEach(r => { rankHtml += `<li>${r.name}: ${r.score} / ${r.total}</li>`; });
+      rankHtml += '</ol>';
+      document.getElementById('result').innerHTML += rankHtml;
     }
 
     function playAudio(src) {
       const player = document.getElementById('audioPlayer');
-      const raw = src.replace('https://github.com/','https://raw.githubusercontent.com/')
-                     .replace('/blob/','/');
-      player.src = raw;
-      player.style.display = 'block';
-      player.load();
+      const raw = src.replace('https://github.com/','https://raw.githubusercontent.com/').replace('/blob/','/');
+      player.src = raw; player.style.display = 'block'; player.load();
       player.play().catch(console.error);
     }
 
     function dragStart(ev) { ev.dataTransfer.setData('text', ev.target.dataset.index); }
     function allowDrop(ev) { ev.preventDefault(); }
-    function drop(ev) {
-      ev.preventDefault();
-      const idx = ev.dataTransfer.getData('text');
-      const slot = ev.target.closest('.drop-slot');
-      const orig = document.querySelector(`.drag-item[data-index='${idx}']`);
-      if (slot && orig && !slot.querySelector('img')) {
-        slot.appendChild(orig);
-        orig.draggable = false;
-        orig.addEventListener('click', function rm() {
-          document.querySelector('.drag-container').appendChild(orig);
-          orig.draggable = true;
-          orig.removeEventListener('click', rm);
-        });
-      }
-    }
+    function drop(ev) { ev.preventDefault(); const idx = ev.dataTransfer.getData('text'); const slot = ev.target.closest('.drop-slot'); const orig = document.querySelector(`.drag-item[data-index='${idx}']`); if (slot && orig && !slot.querySelector('img')) { slot.appendChild(orig); orig.draggable=false; orig.addEventListener('click', function rm(){ document.querySelector('.drag-container').appendChild(orig); orig.draggable=true; orig.removeEventListener('click', rm); }); }}
   </script>
 </body>
 </html>
