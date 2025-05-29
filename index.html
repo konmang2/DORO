@@ -162,6 +162,13 @@ body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfd
     }
 
     function checkAnswer(sel=null) {
+      if (!ok) {
+  const quizEl = document.getElementById('quiz');
+  quizEl.classList.add('shake');
+  quizEl.addEventListener('animationend', () => {
+    quizEl.classList.remove('shake');
+  }, { once: true });
+}
       if (answered) return;
       answered = true;
       clearInterval(timer);
@@ -249,6 +256,7 @@ body { font-family: Arial, sans-serif; background: linear-gradient(#e0eafc, #cfd
     }
 
     function showResult() {
+      document.getElementById('result').innerHTML += rankHtml;
       const nickname = prompt('퀴즈 완료! 닉네임을 입력하세요:', '익명') || '익명';
   const scoreRecord = { name: nickname, score: score, total: shuffledQuestions.length };
       // 랭킹을 배열로 꺼내기(없으면 빈 배열)
